@@ -1,0 +1,13 @@
+---
+title: "RP_Proposal_NIGAM"
+author: "Uddeshya NIGAM"
+date: "10/11/2019"
+output: html_document
+---
+
+```{r}
+library(haven)
+dat <- read_sas("https://github.com/unigam/201901010/blob/master/backup/pu_ssocs10_sas.sas7bdat?raw=true", 
+NULL)
+```
+
