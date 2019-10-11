@@ -6,7 +6,7 @@ output: html_document
 ---
 *** 
 
-## **Research Question and Background** 
+## **1. Research Question and Background** 
 
 With the recent surge in the number of mass shootings and other serious criminal activities in different establishments and institutions across the United States, it has become a concern for policymakers and law enforcement officials alike, to take steps in order to curb crimes. Across the USA, from 2010 until 2018, the K12 mass shootings increased from 15 to 110 (data by CHDS; https://www.chds.us/ssdb/incidents-by-year-2010-present/)
 
@@ -16,17 +16,17 @@ The primary purpose of this paper is to examine as to what extent do factors oth
 
 ***
 
-## **DATASET AND DATA DESCRIPTION** 
+## **2. DATASET AND DATA DESCRIPTION** 
 
 The dataset comes from the SSOC 2010 survey on the crime statistics in K-12 schools across the USA. The survey was conducted using a questionnaire mailed to schools (primary, secondary, high, combined) and telephone follow-ups of school principal officials. Missing values have been imputed. The sample has responses from 2648 schools with a larger proportion of middle and high schools based on the idea (according to data by NCS) that most of the crimes have been reported from middle and high schools. 
 
-# Variables under study
+# 2.1  Variables under study
 
-In order to extract variables of interest for our study, one needs to read through and interpret variable history and descriptions from the adjoining codebook which can be found at https://nces.ed.gov/pubs2010/2010307.pdf
+In order to extract variables of interest for our study, one needs to read through and interpret variable history and descriptions from the adjoining codebook which can be found at https://nces.ed.gov/pubs2015/2015061.pdf
 
 Composite variables have been created as a combination of relevant variables as found in the dataset so as to aid the researcher in carrying analysis without having to create additional data frames as a summation of variables of interest. In order to prevent this section being unnecessarily long, the summaries of our response variables have been provided below (individual code descriptions can be found in the codebook). 
 
-*Dependent/Response Variables* 
+*2.1.1  Dependent/Response Variables* 
 
 1. VIOINC10 <- Total number of violent incidents recorded by the school. 
 These incidents include activities involving a weapon or otherwise like homicides, murder, robbery, threats of attacks, rape. 
@@ -52,11 +52,11 @@ The statement returns "FALSE" which confirms our intuition is correct.
 GANGHATE10 - sum(C0366, C0368, C0369)
 
 
-*Independent Variables* 
+*2.1.2  Independent Variables* 
 
 These variables answer - 'to what extent are the dependent variables in our study depend on these independent variables'
 
-1. FR_CATMN = Recoded percent of combined Black/African American, Hispanic/Latino, Asian, Native Hawaiian/Other Pacific Islander, and American Indian/ Alaska Native students in school as reported in the 2005–06 CCD school data file. 1=less than 5 percent, 2=5 to less than 20 percent, 3=20 to less than 50 percent, 4=50 percent or more. (Categorical) 
+1. PERCWHT = This is a SSOCS-created variable representing Percent White enrollment as reported in the 2007–08 CCD school data file. This variable has four categories. 1 = more than 95 percent, 2 = more than 80 to 95 percent, 3 = more than 50 to 80 percent, and 4 = 50 percent or less. (Categorical)
 
 2. FR_LVEL = School grades offered as reported in the 2005–06 CCD school data file. This variable has four categories indicating the span of grades offered. 1=primary, 2=middle, 3=high school, and 4=combined. (Categorical) 
 
@@ -71,6 +71,28 @@ These variables answer - 'to what extent are the dependent variables in our stud
 7. CO370 = Number of activity disruptions owing to false fire alarms 
 
 8. CO372 = Number of activity disruptions by death/bomb threats, chemical/biological/radiological threats
+
+
+## ** Empirical Model **
+
+***
+*Comment - Owing to time constraints in submitting this draft and the last minute change in dataset choice, some other variables in this huge dataset haven't been able to be accounted for; some of them could yield interesting relationships with each other and would be included in the final paper. Additionally, other econometrical models of interest with their robustness/assumption checks besides their corresponding interpretation would also be included in the final version. This draft hence should be treated strictly as a limited primary introduction to the final paper 
+***
+
+The dependent variables considered in this draft are discreet in nature. However the independent variables are both discreet and ordinal categorical variables. Later, a few categorical variables would be included as dependent variables for the final paper. 
+
+For now, one can employ simple linear and/or multiple linear regressions. Pearson's correlation might not give meaningful results for descriptive statistics owing to categorical variables so one could employ one-way ANOVA to study if mean values are equal for a dependent variable across different categories of our independent categorical variable.
+
+Let's consider if the number of hate/gang related crimes have equal mean values across different levels of percentage of white people enrolled (cat. 1-4 as described in section 2.1.2 ) 
+
+```{r}
+#convert PERCWHT to factor(perwht)
+perwht <- factor(dat$PERCWHT)
+
+#carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of perwht
+summary(aov(dat$GANGHATE10~perwht)) 
+```
+
 
 
 
