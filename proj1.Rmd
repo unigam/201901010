@@ -12,16 +12,63 @@ These crimes have serious implications on the safety of students and staff at sc
 
 The primary purpose of this paper is to examine as to what extent do factors other than security measures undertaken by the school and law enforcement affect crimes of varying degrees in schools. Previous work done by researchers (Jennings et al.2011), have examined relationships between school security facilities and crimes; concluding that increase in deployment of recognizable law enforcement officials and metal detectors reduced violent crimes while increased possession of firearms by police was statistically associated with higher violent criminal activities. This paper would expand on such research by examining if certain student characteristics (their academic abilities and the importance they attach to education) and their demographic factors (their race, whether they come from a crime affected zone) affect the number of crimes both violent (indicated by actions such as shootings, attacks, murders, etc.) and non-violent (possession of weapons, drugs, etc.). 
 
-```{r}
-library(haven)
-dat <- read_sas("https://github.com/unigam/201901010/blob/master/backup/pu_ssocs10_sas.sas7bdat?raw=true", 
-NULL)
-```
 
 ## DATASET AND DATA DESCRIPTION 
 
-Dependent/Response Variables - 
+The dataset comes from the SSOC 2010 survey on the crime statistics in K-12 schools across the USA. The survey was conducted using a questionnaire mailed to schools (primary, secondary, high, combined) and telephone follow-ups of school principal officials. Missing values have been imputed. The sample has responses from 2648 schools with a larger proportion of middle and high schools based on the idea (according to data by NCS) that most of the crimes have been reported from middle and high schools. 
 
-VIOINC08
-VIOPOL08
-NCPOL08
+# Variables under study
+
+In order to extract variables of interest for our study, one needs to read through and interpret variable history and descriptions from the adjoining codebook which can be found at https://nces.ed.gov/pubs2010/2010307.pdf
+
+Composite variables have been created as a combination of relevant variables as found in the dataset so as to aid the researcher in carrying analysis without having to create additional data frames as a summation of variables of interest. In order to prevent this section being unnecessarily long, the summaries of our response variables have been provided below (individual code descriptions can be found in the codebook). 
+
+*Dependent/Response Variables* 
+
+1. VIOINC10 <- Total number of violent incidents recorded by the school. 
+These incidents include activities involving a weapon or otherwise like homicides, murder, robbery, threats of attacks, rape. 
+VIOINC10 - sum(C0310, C0314, C0318, C0322, C0326, C0330, C0334, C0338)
+
+2. VIOPOL10 <- Total number of violent crime incidents reported to the police or relevant law enforcement. 
+From intuition, this number ought to be less than VIOINC08, else we might need to account for incidents which might be reported to police straight away rather than taking recourse to school officials suggesting a higher degree of damage or threat. Let's have a look at the result from the code chunk below :
+VIOPOL10 - sum(C0312, C0316, C0320, C0324, C0328, C0332, C0336, C0340)
+
+```{r}
+#load dataset from Github; raw link
+library(haven)
+dat <- read_sas("https://github.com/unigam/201901010/blob/master/backup/pu_ssocs10_sas.sas7bdat?raw=true", 
+NULL)
+
+#check if sum of VIOPOL08 > sum of VIOINV08
+sum(dat$VIOPOL10)>sum(dat$VIOINC10)
+```
+
+The statement returns "FALSE" which confirms our intuition is correct.
+
+3. GANGHATE10 <- Total number of hate crimes and gang related crimes 
+GANGHATE10 - sum(C0366, C0368, C0369)
+
+
+*Independent Variables* 
+
+These variables answer - 'to what extent are the dependent variables in our study depend on these independent variables'
+
+1. FR_CATMN = Recoded percent of combined Black/African American, Hispanic/Latino, Asian, Native Hawaiian/Other Pacific Islander, and American Indian/ Alaska Native students in school as reported in the 2005–06 CCD school data file. 1=less than 5 percent, 2=5 to less than 20 percent, 3=20 to less than 50 percent, 4=50 percent or more. (Categorical) 
+
+2. FR_LVEL = School grades offered as reported in the 2005–06 CCD school data file. This variable has four categories indicating the span of grades offered. 1=primary, 2=middle, 3=high school, and 4=combined. (Categorical) 
+
+3. FR_SIZE = Size categories. This variable collapses the number of students into four categories: 1=less than 300; 2=300–499; 3=500–999; and 4=1,000 or more. (Categorical) 
+
+4. FR_URBAN = This variable collapses the 12-level locale variable on the SSOCS:2008 restricted-use file into four categories: city (FR_LOC12/R=11, 12, or 13), suburb (FR_LOC12/R=21, 22, or 23), town (FR_LOC12/R=31, 32, or 33), and rural (FR_LOC12/R=41, 42, or 43). (Categorical) 
+
+5. CO556 = Number of full time mental health professionals or counsellors 
+
+6. CO558 = Number of part time mental health professionals or counsellors
+
+7. CO370 = Number of activity disruptions owing to false fire alarms 
+
+8. CO372 = Number of activity disruptions by death/bomb threats, chemical/biological/radiological threats
+
+
+
+
