@@ -4,6 +4,13 @@ author: "Uddeshya NIGAM"
 date: "10/11/2019"
 output: html_document
 ---
+## Research Question and Background 
+
+With the recent surge in the number of mass shootings and other serious criminal activities in different establishments and institutions across the United States, it has become a concern for policymakers and law enforcement officials alike, to take steps in order to curb crimes. Across the USA, from 2010 until 2018, the K12 mass shootings increased from 15 to 110 (data by CHDS; https://www.chds.us/ssdb/incidents-by-year-2010-present/)
+
+These crimes have serious implications on the safety of students and staff at schools where these factors might affect the quality of learning and overall educational attainment. 
+
+The primary purpose of this paper is to examine as to what extent do factors other than security measures undertaken by the school and law enforcement affect crimes of varying degrees in schools. Previous work done by researchers (Jennings et al.2011), have examined relationships between school security facilities and crimes; concluding that increase in deployment of recognizable law enforcement officials and metal detectors reduced violent crimes while increased possession of firearms by police was statistically associated with higher violent criminal activities. This paper would expand on such research by examining if certain student characteristics (their academic abilities and the importance they attach to education) and their demographic factors (their race, whether they come from a crime affected zone) affect the number of crimes both violent (indicated by actions such as shootings, attacks, murders, etc.) and non-violent (possession of weapons, drugs, etc.). 
 
 ```{r}
 library(haven)
