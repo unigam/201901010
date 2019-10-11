@@ -92,7 +92,12 @@ perwht <- factor(dat$PERCWHT)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of perwht
 summary(aov(dat$GANGHATE10~perwht)) 
 ```
+Since the results are significant (>95% C.I), we might run a regression to estimate how change in perwht across categories affect GANGHATE. 
 
+```{r}
+#Results of a SLR between GANGHATE and perwht
+summary(lm(formula = GANGHATE~perwht, data = dat)) 
+```
 
 
 
