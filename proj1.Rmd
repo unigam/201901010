@@ -18,3 +18,10 @@ dat <- read_sas("https://github.com/unigam/201901010/blob/master/backup/pu_ssocs
 NULL)
 ```
 
+## DATASET AND DATA DESCRIPTION 
+
+Dependent/Response Variables - 
+
+VIOINC08
+VIOPOL08
+NCPOL08
