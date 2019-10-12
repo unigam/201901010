@@ -122,6 +122,7 @@ As seen in the MLR and as expected by the data collection officials when samplin
 summary(lm(formula = GANGHATE~frlvel, data = dat)) 
 ```
 
+It seems high schools report a significantly highest level of crime among all categories. This confirms the earlier assumption
 
 
 
