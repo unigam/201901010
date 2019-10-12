@@ -48,8 +48,8 @@ sum(dat$VIOPOL10)>sum(dat$VIOINC10)
 
 The statement returns "FALSE" which confirms our intuition is correct.
 
-3. GANGHATE10 <- Total number of hate crimes and gang related crimes 
-GANGHATE10 - sum(C0366, C0368, C0369)
+3. GANGHATE <- Total number of hate crimes and gang related crimes 
+GANGHATE - sum(C0366, C0368, C0369)
 
 
 *2.1.2  Independent Variables* 
@@ -90,7 +90,7 @@ Let's consider if the number of hate/gang related crimes have equal mean values 
 perwht <- factor(dat$PERCWHT)
 
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of perwht
-summary(aov(dat$GANGHATE10~perwht)) 
+summary(aov(dat$GANGHATE~perwht)) 
 ```
 Since the results are significant (>95% C.I), we might run a regression to estimate how change in perwht across categories affect GANGHATE. 
 
