@@ -99,6 +99,19 @@ Since the results are significant (>95% C.I), we might run a regression to estim
 summary(lm(formula = GANGHATE~perwht, data = dat)) 
 ```
 
+It seems from the results that schools with lower percentage of white enrollment witness a greater number of gang/hate crimes as the results seem to be statistically significant. 
+
+A multiple regression between GANGHATE and factors of PERCWHT, FR_LVEL, FR_SIZE, FR_URBAN to check the partial effects of each on total gang and hate related crimes.
+
+```{r}
+#Converting into factors
+frlvel <- factor(dat$FR_LVEL)
+frsize <- factor(dat$FR_SIZE)
+frurban <- factor(dat$FR_URBAN)
+
+#Results of the regression
+summary(lm(formula = GANGHATE~perwht+frlvel+frsize+frurban, data = dat))
+```
 
 
 
