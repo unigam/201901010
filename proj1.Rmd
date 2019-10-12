@@ -2,11 +2,12 @@
 title: "RP_Proposal_NIGAM"
 author: "Uddeshya NIGAM"
 date: "10/11/2019"
-output: html_document
+output: 
+    rmdformats::readthedown
 ---
 *** 
 
-## **1. Research Question and Background** 
+# **1. Research Question and Background** 
 
 With the recent surge in the number of mass shootings and other serious criminal activities in different establishments and institutions across the United States, it has become a concern for policymakers and law enforcement officials alike, to take steps in order to curb crimes. Across the USA, from 2010 until 2018, the K12 mass shootings increased from 15 to 110 (data by CHDS; https://www.chds.us/ssdb/incidents-by-year-2010-present/)
 
@@ -16,17 +17,17 @@ The primary purpose of this paper is to examine as to what extent do factors oth
 
 ***
 
-## **2. DATASET AND DATA DESCRIPTION** 
+# **2. DATASET AND DATA DESCRIPTION** 
 
 The dataset comes from the SSOC 2010 survey on the crime statistics in K-12 schools across the USA. The survey was conducted using a questionnaire mailed to schools (primary, secondary, high, combined) and telephone follow-ups of school principal officials. Missing values have been imputed. The sample has responses from 2648 schools with a larger proportion of middle and high schools based on the idea (according to data by NCS) that most of the crimes have been reported from middle and high schools. 
 
-# 2.1  Variables under study
+## 2.1  Variables under study
 
 In order to extract variables of interest for our study, one needs to read through and interpret variable history and descriptions from the adjoining codebook which can be found at https://nces.ed.gov/pubs2015/2015061.pdf
 
 Composite variables have been created as a combination of relevant variables as found in the dataset so as to aid the researcher in carrying analysis without having to create additional data frames as a summation of variables of interest. In order to prevent this section being unnecessarily long, the summaries of our response variables have been provided below (individual code descriptions can be found in the codebook). 
 
-*2.1.1  Dependent/Response Variables* 
+### *2.1.1  Dependent/Response Variables* 
 
 1. VIOINC10 <- Total number of violent incidents recorded by the school. 
 These incidents include activities involving a weapon or otherwise like homicides, murder, robbery, threats of attacks, rape. 
@@ -41,18 +42,17 @@ VIOPOL10 - sum(C0312, C0316, C0320, C0324, C0328, C0332, C0336, C0340)
 library(haven)
 dat <- read_sas("https://github.com/unigam/201901010/blob/master/backup/pu_ssocs10_sas.sas7bdat?raw=true", 
 NULL)
-
 #check if sum of VIOPOL08 > sum of VIOINV08
 sum(dat$VIOPOL10)>sum(dat$VIOINC10)
 ```
 
 The statement returns "FALSE" which confirms our intuition is correct.
 
-3. GANGHATE <- Total number of hate crimes and gang related crimes 
-GANGHATE - sum(C0366, C0368, C0369)
+3. GANGHATE10 <- Total number of hate crimes and gang related crimes 
+GANGHATE10 - sum(C0366, C0368, C0369)
 
 
-*2.1.2  Independent Variables* 
+### *2.1.2  Independent Variables* 
 
 These variables answer - 'to what extent are the dependent variables in our study depend on these independent variables'
 
@@ -72,8 +72,11 @@ These variables answer - 'to what extent are the dependent variables in our stud
 
 8. CO372 = Number of activity disruptions by death/bomb threats, chemical/biological/radiological threats
 
+***
 
-## ** Empirical Model **
+
+
+# **3.  Empirical Model **
 
 ***
 *Comment - Owing to time constraints in submitting this draft and the last minute change in dataset choice, some other variables in this huge dataset haven't been able to be accounted for; some of them could yield interesting relationships with each other and would be included in the final paper. Additionally, other econometrical models of interest with their robustness/assumption checks besides their corresponding interpretation would also be included in the final version. This draft hence should be treated strictly as a limited primary introduction to the final paper. This draft version  only considers GANGHATE to reflect the possibilities of econometric analysis for this dataset.  
@@ -88,7 +91,6 @@ Let's consider if the number of hate/gang related crimes have equal mean values 
 ```{r}
 #convert PERCWHT to factor(perwht)
 perwht <- factor(dat$PERCWHT)
-
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of perwht
 summary(aov(dat$GANGHATE~perwht)) 
 ```
@@ -108,7 +110,6 @@ A multiple regression between GANGHATE and factors of PERCWHT, FR_LVEL, FR_SIZE,
 frlvel <- factor(dat$FR_LVEL)
 frsize <- factor(dat$FR_SIZE)
 frurban <- factor(dat$FR_URBAN)
-
 #Results of the regression
 summary(lm(formula = GANGHATE~perwht+frlvel+frsize+frurban, data = dat))
 ```
@@ -123,6 +124,7 @@ summary(lm(formula = GANGHATE~frlvel, data = dat))
 ```
 
 It seems high schools report a significantly highest level of crime among all categories. This confirms the earlier assumption
+
 
 
 
