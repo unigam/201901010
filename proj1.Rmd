@@ -17,8 +17,8 @@ The primary purpose of this paper is to examine as to what extent do factors oth
 
 ***
 
-# **2. DATASET AND DATA DESCRIPTION** 
-
+# **2. Dataset and Data description** 
+ 
 The dataset comes from the SSOC 2010 survey on the crime statistics in K-12 schools across the USA. The survey was conducted using a questionnaire mailed to schools (primary, secondary, high, combined) and telephone follow-ups of school principal officials. Missing values have been imputed. The sample has responses from 2648 schools with a larger proportion of middle and high schools based on the idea (according to data by NCS) that most of the crimes have been reported from middle and high schools. 
 
 ## 2.1  Variables under study
