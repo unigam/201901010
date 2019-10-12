@@ -76,7 +76,7 @@ These variables answer - 'to what extent are the dependent variables in our stud
 ## ** Empirical Model **
 
 ***
-*Comment - Owing to time constraints in submitting this draft and the last minute change in dataset choice, some other variables in this huge dataset haven't been able to be accounted for; some of them could yield interesting relationships with each other and would be included in the final paper. Additionally, other econometrical models of interest with their robustness/assumption checks besides their corresponding interpretation would also be included in the final version. This draft hence should be treated strictly as a limited primary introduction to the final paper 
+*Comment - Owing to time constraints in submitting this draft and the last minute change in dataset choice, some other variables in this huge dataset haven't been able to be accounted for; some of them could yield interesting relationships with each other and would be included in the final paper. Additionally, other econometrical models of interest with their robustness/assumption checks besides their corresponding interpretation would also be included in the final version. This draft hence should be treated strictly as a limited primary introduction to the final paper. This draft version  only considers GANGHATE to reflect the possibilities of econometric analysis for this dataset.  
 ***
 
 The dependent variables considered in this draft are discreet in nature. However the independent variables are both discreet and ordinal categorical variables. Later, a few categorical variables would be included as dependent variables for the final paper. 
@@ -112,6 +112,16 @@ frurban <- factor(dat$FR_URBAN)
 #Results of the regression
 summary(lm(formula = GANGHATE~perwht+frlvel+frsize+frurban, data = dat))
 ```
+
+What could be even more interesting to compare is how the estimates change when GANGHATE is regressed on these independent variables individually. As we notice, the partial effects of categories across perwht are statistically relatively less when compared to their SLR counterpart. 
+
+As seen in the MLR and as expected by the data collection officials when sampling this dataset, the higher incidences of gang related crimes are in middle and high school (larger coefficients of frlvel2 and frlvel3). Let's run a SLR to examine what the intercept is and how the effects compare against a MLR regression. 
+
+```{r}
+#Results of a SLR between GANGHATE and frlvel
+summary(lm(formula = GANGHATE~frlvel, data = dat)) 
+```
+
 
 
 
