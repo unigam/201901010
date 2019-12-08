@@ -125,7 +125,7 @@ Since the results are significant (>95% C.I), we might run a regression to estim
 Let's see what we have for the other independent variables with respect to GANGHATE. 
 
 ```{r}
-#convert FR_LVEL to factor(lvel)
+#convert FR_LVEL to factor(fr_lvel)
 fr_lvel <- factor(dat$FR_LVEL)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_lvel
 summary(aov(dat$GANGHATE~fr_lvel)) 
@@ -145,22 +145,19 @@ fr_urban <- factor(dat$FR_URBAN)
 summary(aov(dat$GANGHATE~fr_urban)) 
 ```
 
-```{r}
-#Results of a SLR between GANGHATE and perwht
-summary(lm(formula = GANGHATE~perwht, data = dat)) 
-```
-
-It seems from the results that schools with lower percentage of white enrollment witness a greater number of gang/hate crimes as the results seem to be statistically significant. 
+It's evident that our results are statistically significant (p<0.05) hence they will be all incoporated in our regression analysis!  
 
 A multiple regression between GANGHATE and factors of PERCWHT, FR_LVEL, FR_SIZE, FR_URBAN to check the partial effects of each on total gang and hate related crimes.
 
-```{r}
-#Converting into factors
-frlvel <- factor(dat$FR_LVEL)
-frsize <- factor(dat$FR_SIZE)
-frurban <- factor(dat$FR_URBAN)
+```{r, results = "asis"}
+
 #Results of the regression
-summary(lm(formula = GANGHATE~perwht+frlvel+frsize+frurban, data = dat))
+m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
+m2<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
+
+library("stargazer")
+stargazer(list(m1, m2), type="html",
+          column.labels = c("Model 1", "Model 2"))
 ```
 
 What could be even more interesting to compare is how the estimates change when GANGHATE is regressed on these independent variables individually. As we notice, the partial effects of categories across perwht are statistically relatively less when compared to their SLR counterpart. 
