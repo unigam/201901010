@@ -122,6 +122,29 @@ summary(aov(dat$GANGHATE~perwht))
 ```
 Since the results are significant (>95% C.I), we might run a regression to estimate how change in perwht across categories affect GANGHATE. 
 
+Let's see what we have for the other independent variables with respect to GANGHATE. 
+
+```{r}
+#convert FR_LVEL to factor(lvel)
+fr_lvel <- factor(dat$FR_LVEL)
+#carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_lvel
+summary(aov(dat$GANGHATE~fr_lvel)) 
+```
+
+```{r}
+#convert FR_SIZE to factor(fr_size)
+fr_size <- factor(dat$FR_SIZE)
+#carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_size
+summary(aov(dat$GANGHATE~fr_size)) 
+```
+
+```{r}
+#convert FR_URBAN to factor(fr_urban)
+fr_urban <- factor(dat$FR_URBAN)
+#carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_urban
+summary(aov(dat$GANGHATE~fr_urban)) 
+```
+
 ```{r}
 #Results of a SLR between GANGHATE and perwht
 summary(lm(formula = GANGHATE~perwht, data = dat)) 
