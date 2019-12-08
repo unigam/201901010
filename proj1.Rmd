@@ -66,21 +66,35 @@ These variables answer - 'to what extent are the dependent variables in our stud
 
 4. FR_URBAN = This variable collapses the 12-level locale variable on the SSOCS:2008 restricted-use file into four categories: city (FR_LOC12/R=11, 12, or 13), suburb (FR_LOC12/R=21, 22, or 23), town (FR_LOC12/R=31, 32, or 33), and rural (FR_LOC12/R=41, 42, or 43). (Categorical) 
 
-5. CO556 = Number of full time mental health professionals or counsellors 
 
-6. CO558 = Number of part time mental health professionals or counsellors
-
-7. CO370 = Number of activity disruptions owing to false fire alarms 
-
-8. CO372 = Number of activity disruptions by death/bomb threats, chemical/biological/radiological threats
 
 ```{r}
 #barplot showing number of schools by % of white enrollment 
 counts <- table(dat$PERCWHT)
-barplot(counts, main="Schools by % White Enrollment", horiz=FASLE,
+barplot(counts, main="Schools by % White Enrollment",
   names.arg=c(">95%", ">80% till 95%", ">50% till 80%","50% or less"))
 ```
 
+```{r}
+#barplot showing number of schools by grade levels offered 
+counts <- table(dat$FR_LVEL)
+barplot(counts, main="Schools by Grade Levels",
+  names.arg=c("Primary", "Middle", "High School","Combined"))
+```
+
+```{r}
+#barplot showing number of schools by enrollment size
+counts <- table(dat$FR_SIZE)
+barplot(counts, main="Schools by Enrollment Size",
+  names.arg=c("less than 300", "300-499", "500-999","1000 or more"))
+```
+
+```{r}
+#barplot showing number of schools by location
+counts <- table(dat$FR_URBAN)
+barplot(counts, main="Schools by Location",
+  names.arg=c("City", "Suburban", "Town","Rural"))
+```
 ***
 
 
