@@ -68,7 +68,9 @@ These variables answer - 'to what extent are the dependent variables in our stud
 
 4. FR_URBAN = This variable collapses the 12-level locale variable on the SSOCS:2008 restricted-use file into four categories: city (FR_LOC12/R=11, 12, or 13), suburb (FR_LOC12/R=21, 22, or 23), town (FR_LOC12/R=31, 32, or 33), and rural (FR_LOC12/R=41, 42, or 43). (Categorical) 
 
+### *2.1.2.1  We can summarise the various independent variables as below to see their distribution across categories*
 
+1. Number of schools by percentage of white students enrolled
 
 ```{r}
 #barplot showing number of schools by % of white enrollment 
@@ -76,6 +78,7 @@ counts <- table(dat$PERCWHT)
 barplot(counts, main="Schools by % White Enrollment",
   names.arg=c(">95%", ">80% till 95%", ">50% till 80%","50% or less"))
 ```
+2. Number of schools by grade levels
 
 ```{r}
 #barplot showing number of schools by grade levels offered 
@@ -84,6 +87,8 @@ barplot(counts, main="Schools by Grade Levels",
   names.arg=c("Primary", "Middle", "High School","Combined"))
 ```
 
+3. Number of schools by enrollment size
+
 ```{r}
 #barplot showing number of schools by enrollment size
 counts <- table(dat$FR_SIZE)
@@ -91,25 +96,24 @@ barplot(counts, main="Schools by Enrollment Size",
   names.arg=c("less than 300", "300-499", "500-999","1000 or more"))
 ```
 
+4. Number of schools by location
+
 ```{r}
 #barplot showing number of schools by location
 counts <- table(dat$FR_URBAN)
 barplot(counts, main="Schools by Location",
   names.arg=c("City", "Suburban", "Town","Rural"))
 ```
+
 ***
 
 
 
 # **3.  Empirical Model **
 
-***
-*Comment - Owing to time constraints in submitting this draft and the last minute change in dataset choice, some other variables in this huge dataset haven't been able to be accounted for; some of them could yield interesting relationships with each other and would be included in the final paper. Additionally, other econometrical models of interest with their robustness/assumption checks besides their corresponding interpretation would also be included in the final version. This draft hence should be treated strictly as a limited primary introduction to the final paper. This draft version  only considers GANGHATE to reflect the possibilities of econometric analysis for this dataset.  
-***
+The dependent variables considered in this draft are discreet in nature. However the independent variables are both discreet and ordinal categorical variables. 
 
-The dependent variables considered in this draft are discreet in nature. However the independent variables are both discreet and ordinal categorical variables. Later, a few categorical variables would be included as dependent variables for the final paper. 
-
-For now, one can employ simple linear and/or multiple linear regressions. Pearson's correlation might not give meaningful results for descriptive statistics owing to categorical variables so one could employ one-way ANOVA to study if mean values are equal for a dependent variable across different categories of our independent categorical variable.
+One can employ simple linear and/or multiple linear regressions. Pearson's correlation might not give meaningful results for descriptive statistics owing to categorical variables so one could employ one-way ANOVA to study if mean values are equal for a dependent variable across different categories of our independent categorical variable.
 
 Let's consider if the number of hate/gang related crimes have equal mean values across different levels of percentage of white people enrolled (cat. 1-4 as described in section 2.1.2 ) 
 
