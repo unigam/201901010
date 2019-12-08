@@ -106,9 +106,6 @@ barplot(counts, main="Schools by Location",
 ```
 
 ***
-
-
-
 # **3.  Empirical Model **
 
 The dependent variables considered in this draft are discreet in nature. However the independent variables are both discreet and ordinal categorical variables. 
