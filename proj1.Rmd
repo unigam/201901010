@@ -74,6 +74,13 @@ These variables answer - 'to what extent are the dependent variables in our stud
 
 8. CO372 = Number of activity disruptions by death/bomb threats, chemical/biological/radiological threats
 
+```{r}
+#barplot showing number of schools by % of white enrollment 
+counts <- table(dat$PERCWHT)
+barplot(counts, main="Schools by % White Enrollment", horiz=FASLE,
+  names.arg=c(">95%", ">80% till 95%", ">50% till 80%","50% or less"))
+```
+
 ***
 
 
