@@ -1,9 +1,10 @@
 ---
-title: "RP_Proposal_NIGAM"
+title: "RP_Doc_NIGAM"
 author: "Uddeshya NIGAM"
 date: "10/11/2019"
 output: 
     rmdformats::readthedown
+code_folding : hide
 ---
 *** 
 
@@ -41,11 +42,13 @@ VIOINC10 - sum(C0310, C0314, C0318, C0322, C0326, C0330, C0334, C0338)
 From intuition, this number ought to be less than VIOINC08, else we might need to account for incidents which might be reported to police straight away rather than taking recourse to school officials suggesting a higher degree of damage or threat. Let's have a look at the result from the code chunk below :
 VIOPOL10 - sum(C0312, C0316, C0320, C0324, C0328, C0332, C0336, C0340)
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 #load dataset from Github; raw link
 library(haven)
 dat <- read_sas("https://github.com/unigam/201901010/blob/master/backup/pu_ssocs10_sas.sas7bdat?raw=true", 
 NULL)
+#load stargazer for later analysis 
+library(stargazer)
 #check if sum of VIOPOL08 > sum of VIOINV08
 sum(dat$VIOPOL10)>sum(dat$VIOINC10)
 ```
@@ -118,35 +121,46 @@ summary(aov(dat$GANGHATE~perwht))
 ```
 Since the results are significant (>95% C.I), we might run a regression to estimate how change in perwht across categories affect GANGHATE. 
 Let's see what we have for the other independent variables with respect to GANGHATE. 
+
+1. ANOVA test of school level of education against total number of gang related crimes, total number of incidents reported with school and police (VIOINC10 and VIOPOL10)
 ```{r}
 #convert FR_LVEL to factor(fr_lvel)
 fr_lvel <- factor(dat$FR_LVEL, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_lvel
-summary(aov(dat$GANGHATE~fr_lvel)) 
+summary.aov(manova(cbind(dat$GANGHATE,dat$VIOINC10,dat$VIOPOL10)~fr_lvel)) 
 ```
+2. ANOVA test of school enrollment size against total number of gang related crimes, total number of incidents reported with school and police (VIOINC10 and VIOPOL10).
+
 ```{r}
 #convert FR_SIZE to factor(fr_size)
 fr_size <- factor(dat$FR_SIZE, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_size
-summary(aov(dat$GANGHATE~fr_size)) 
+summary.aov(manova(cbind(dat$GANGHATE,dat$VIOINC10,dat$VIOPOL10)~fr_size)) 
 ```
+3. ANOVA test of school location against total number of gang related crimes, total number of incidents reported with school and police (VIOINC10 and VIOPOL10)
+
 ```{r}
 #convert FR_URBAN to factor(fr_urban)
 fr_urban <- factor(dat$FR_URBAN, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_urban
-summary(aov(dat$GANGHATE~fr_urban)) 
+summary.aov(manova(cbind(dat$GANGHATE,dat$VIOINC10,dat$VIOPOL10)~fr_urban)) 
 ```
 It's evident that our results are statistically significant (p<0.05) hence they will be all incoporated in our regression analysis!  
+***
+
+# **3.  Analysis and Results **
+
 A multiple regression between GANGHATE and factors of PERCWHT, FR_LVEL, FR_SIZE, FR_URBAN to check the partial effects of each on total gang and hate related crimes.
 ```{r, results = "asis"}
 #Results of the regression
 m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 m2<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
-library("stargazer")
-stargazer(list(m1, m2), type="html", single.row = TRUE,
+m3<- lm(formula = VIOPOL10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
+
+stargazer(list(m1, m2, m3), type="html", single.row = TRUE,
     covariate.labels = c("greater than 80% till 95% white enrollment","greater than 50% till 80% white enrollment","50% or less white enrollment","Middle Schools","High Schools","Combined Grade Offering","300-499 enrollment size","500-999 enrollment size","1000 or more enrollment size","Suburban Schools","Schools in Towns", "Schools in Rural Regions"),
-    dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school"),
-          column.labels = c("Model 1", "Model 2"))
+    dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school","Total number of violent crimes reported by the police"),
+          column.labels = c("Model 1", "Model 2","Model 3"))
 ```
 Let's change the factor levels to compare the other factors against one which has the largest number of observations as seen earlier from the bar plots in Section 2.1.2.1 and see how our results stack up!
 ```{r, results = "asis"}
@@ -156,9 +170,10 @@ fr_size <- relevel(fr_size, ref = 3)
 fr_urban <- relevel(fr_urban, ref = 2)
 m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 m2<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
-library("stargazer")
-stargazer(list(m1, m2), type="html", single.row = TRUE,
+m3<- lm(formula = VIOPOL10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
+
+stargazer(list(m1, m2, m3), type="html", single.row = TRUE,
 covariate.labels = c("greater than 95% white enrollment","greater than 80% till 95% white enrollment","greater than 50% till 80% white enrollment","Primary Schools","Middle Schools","Combined Grade Offering","less than 300 enrollment size","300-499 enrollment size","1000 or more enrollment size","Schools in cities","Schools in Towns", "Schools in Rural Regions"),
-    dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school"),
-          column.labels = c("Model 1", "Model 2"))
+    dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school","Total number of violent crimes reported by the police"),
+          column.labels = c("Model 1", "Model 2","Model 3"))
 ```
