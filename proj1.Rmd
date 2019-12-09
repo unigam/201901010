@@ -162,17 +162,23 @@ stargazer(list(m1, m2), type="html",
           column.labels = c("Model 1", "Model 2"))
 ```
 
-What could be even more interesting to compare is how the estimates change when GANGHATE is regressed on these independent variables individually. As we notice, the partial effects of categories across perwht are statistically relatively less when compared to their SLR counterpart. 
-
-As seen in the MLR and as expected by the data collection officials when sampling this dataset, the higher incidences of gang related crimes are in middle and high school (larger coefficients of frlvel2 and frlvel3). Let's run a SLR to examine what the intercept is and how the effects compare against a MLR regression. 
+Let's change the factor levels to compare the other factors against one which has the largest number of observations as seen earlier from the bar plots in Section 2.1.2.1 and see how our results stack up!
 
 ```{r}
-#Results of a SLR between GANGHATE and frlvel
-summary(lm(formula = GANGHATE~frlvel, data = dat)) 
+dat$perwht <- relevel(dat$perwht, ref = "4")
+dat$fr_lvel <- relevel(dat$fr_lvel, ref = "3")
+dat$fr_size <- relevel(dat$fr_size, ref = "3")
+dat$fr_urban <- relevel(dat$fr_urban, ref = "2")
+
+m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
+m2<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
+
+library("stargazer")
+stargazer(list(m1, m2), type="html", 
+    covariate.labels = c("greater than 80% till 95% white enrollment","greater than 50% till 80% white enrollment","50% or less white enrollment","Middle Schools","High Schools","Combined Grade Offering","300-499 enrollment size","500-999 enrollment size","1000 or more enrollment size","Suburban Schools","Schools in Towns", "Schools in Rural Regions"),
+    dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school"),
+          column.labels = c("Model 1", "Model 2"))
 ```
-
-It seems high schools report a significantly highest level of crime among all categories. This confirms the earlier assumption
-
 
 
 
