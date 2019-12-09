@@ -158,6 +158,7 @@ m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 m2<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 library("stargazer")
 stargazer(list(m1, m2), type="html", single.row = TRUE,
+covariate.labels = c("greater than 95% white enrollment","greater than 80% till 95% white enrollment","greater than 50% till 80% white enrollment","Primary Schools","Middle Schools","Combined Grade Offering","less than 300 enrollment size","300-499 enrollment size","1000 or more enrollment size","Schools in cities","Schools in Towns", "Schools in Rural Regions"),
     dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school"),
           column.labels = c("Model 1", "Model 2"))
 ```
