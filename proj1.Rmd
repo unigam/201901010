@@ -107,78 +107,57 @@ barplot(counts, main="Schools by Location",
 
 ***
 # **3.  Empirical Model **
-
 The dependent variables considered in this draft are discreet in nature. However the independent variables are both discreet and ordinal categorical variables. 
-
 One can employ simple linear and/or multiple linear regressions. Pearson's correlation might not give meaningful results for descriptive statistics owing to categorical variables so one could employ one-way ANOVA to study if mean values are equal for a dependent variable across different categories of our independent categorical variable.
-
 Let's consider if the number of hate/gang related crimes have equal mean values across different levels of percentage of white people enrolled (cat. 1-4 as described in section 2.1.2 ) 
-
 ```{r}
 #convert PERCWHT to factor(perwht)
-perwht <- factor(dat$PERCWHT)
+perwht <- factor(dat$PERCWHT, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of perwht
 summary(aov(dat$GANGHATE~perwht)) 
 ```
 Since the results are significant (>95% C.I), we might run a regression to estimate how change in perwht across categories affect GANGHATE. 
-
 Let's see what we have for the other independent variables with respect to GANGHATE. 
-
 ```{r}
 #convert FR_LVEL to factor(fr_lvel)
-fr_lvel <- factor(dat$FR_LVEL)
+fr_lvel <- factor(dat$FR_LVEL, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_lvel
 summary(aov(dat$GANGHATE~fr_lvel)) 
 ```
-
 ```{r}
 #convert FR_SIZE to factor(fr_size)
-fr_size <- factor(dat$FR_SIZE)
+fr_size <- factor(dat$FR_SIZE, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_size
 summary(aov(dat$GANGHATE~fr_size)) 
 ```
-
 ```{r}
 #convert FR_URBAN to factor(fr_urban)
-fr_urban <- factor(dat$FR_URBAN)
+fr_urban <- factor(dat$FR_URBAN, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_urban
 summary(aov(dat$GANGHATE~fr_urban)) 
 ```
-
 It's evident that our results are statistically significant (p<0.05) hence they will be all incoporated in our regression analysis!  
-
 A multiple regression between GANGHATE and factors of PERCWHT, FR_LVEL, FR_SIZE, FR_URBAN to check the partial effects of each on total gang and hate related crimes.
-
 ```{r, results = "asis"}
-
 #Results of the regression
 m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 m2<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
-
 library("stargazer")
-stargazer(list(m1, m2), type="html", 
+stargazer(list(m1, m2), type="html", single.row = TRUE,
     covariate.labels = c("greater than 80% till 95% white enrollment","greater than 50% till 80% white enrollment","50% or less white enrollment","Middle Schools","High Schools","Combined Grade Offering","300-499 enrollment size","500-999 enrollment size","1000 or more enrollment size","Suburban Schools","Schools in Towns", "Schools in Rural Regions"),
     dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school"),
           column.labels = c("Model 1", "Model 2"))
 ```
-
 Let's change the factor levels to compare the other factors against one which has the largest number of observations as seen earlier from the bar plots in Section 2.1.2.1 and see how our results stack up!
-
-```{r}
-dat$perwht <- relevel(dat$perwht, ref = "4")
-dat$fr_lvel <- relevel(dat$fr_lvel, ref = "3")
-dat$fr_size <- relevel(dat$fr_size, ref = "3")
-dat$fr_urban <- relevel(dat$fr_urban, ref = "2")
-
+```{r, results = "asis"}
+perwht <- relevel(perwht, ref = 4)
+fr_lvel <- relevel(fr_lvel, ref = 3)
+fr_size <- relevel(fr_size, ref = 3)
+fr_urban <- relevel(fr_urban, ref = 2)
 m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 m2<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
-
 library("stargazer")
-stargazer(list(m1, m2), type="html", 
-    covariate.labels = c("greater than 80% till 95% white enrollment","greater than 50% till 80% white enrollment","50% or less white enrollment","Middle Schools","High Schools","Combined Grade Offering","300-499 enrollment size","500-999 enrollment size","1000 or more enrollment size","Suburban Schools","Schools in Towns", "Schools in Rural Regions"),
+stargazer(list(m1, m2), type="html", single.row = TRUE,
     dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school"),
           column.labels = c("Model 1", "Model 2"))
 ```
-
-
-
