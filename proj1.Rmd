@@ -148,7 +148,7 @@ summary.aov(manova(cbind(dat$GANGHATE,dat$VIOINC10,dat$VIOPOL10)~fr_urban))
 It's evident that our results are statistically significant (p<0.05) hence they will be all incoporated in our regression analysis!  
 ***
 
-# **3.  Analysis and Results **
+# **4.  Analysis and Results **
 
 A multiple regression between GANGHATE and factors of PERCWHT, FR_LVEL, FR_SIZE, FR_URBAN to check the partial effects of each on total gang and hate related crimes.
 ```{r, results = "asis"}
