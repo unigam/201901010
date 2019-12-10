@@ -157,17 +157,41 @@ stargazer(list(m1, m2, m3), type="html", single.row = TRUE,
     dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school","Total number of violent crimes reported by the police"),
           column.labels = c("Model 1", "Model 2","Model 3"))
 ```
-Let's change the factor levels to compare the other factors against one which has the largest number of observations as seen earlier from the bar plots in Section 2.1.2.1 and see how our results stack up!
+
+The results can be interpreted as follows : (ceterus paribus)
+
+1. The total number of gang hate crimes on average for schools with white student enrollment >80%-95% is 0.298 instances lesser than schools with white student enrollment of >95%. Also, the total number of gang hate crimes on average for schools with white student enrollment >50%-80% and >50% is 0.069 instances lesser and 1.226 instances more than schools with white student enrollment of >95% respectively. 
+This observation faces issues of statistical significance for the first two categories of the variable "percentage of white student enrollment", hence in order to confirm if this variable should be dropped from our model, we conduct a Likelihood Ratio Test and see if p<0.05 for our level of significance. There is a multicollinearity issue here (schools with >95% whites will also encompass observations from schools with >80%-95% whites)
+
+```{r}
+#LRT test 
+mhat_perwht<-lm(formula = GANGHATE~fr_lvel+fr_size+fr_urban, data = dat)
+anova(m1, mhat_perwht, test="LRT")
+```
+
+Since p<0.05, the variable should be inluded in the model. 
+
+2. The total number of gang hate related crimes on average for middle schools is 0.893 instances greater than those in primary schools, while it is 0.909 and 0.81 instances greater for high schools and schools with combined grade offerings. Fair to assume that since combined grade offerings also include primary schools, the coefficient is lesser than that of middle and high schools. The observation for combined grade offerings renders a p-value of 0.18102; this could be attributed to some multicollinearity since the difference across levels in this category is being compared against primary schools but the combined grade offerings level itself contains some students from primary schools. 
+
+3. For our next variable, we observe that schools with enrollment size of 300-499 report gang related crimes on an average of 0.201 instances greater than schools with size of less than 300 students. This number increases to 0.436 for schools of size 500-999 students and 1.239 for schools with 1000 or more than 1000 students. 
+Results might come across as statistically insignificant owing to multicollinearity issues. Schools with size 500-999 might not be considered as schools with more than 1000 students but could potentially be considered as encompassing schools with 300-499 students!
+
+4. Our last variable in the model can be explained as follows : Schools in suburban areas report on an average 1.323 lesser instances of gang related crimes as compared to schools in cities while schools in towns and rural areas report 1.221 and 1.309 instances of lesser gang and hate related crimes on an average than schools in cities. All results are significant with p<0.05
+
+
+
+Let's change the factor levels to account for multicollinearity issues by relevelling and see how our results stack up both in terms of beta coefficients and significance tests!
+
 ```{r, results = "asis"}
 perwht <- relevel(perwht, ref = 4)
-fr_lvel <- relevel(fr_lvel, ref = 3)
-fr_size <- relevel(fr_size, ref = 3)
-fr_urban <- relevel(fr_urban, ref = 2)
+fr_lvel <- relevel(fr_lvel, ref = 1)
+fr_size <- relevel(fr_size, ref = 4)
+fr_urban <- relevel(fr_urban, ref = 1)
 m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 m2<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 m3<- lm(formula = VIOPOL10~perwht+fr_lvel+fr_size+fr_urban, data = dat)
 stargazer(list(m1, m2, m3), type="html", single.row = TRUE,
-covariate.labels = c("greater than 95% white enrollment","greater than 80% till 95% white enrollment","greater than 50% till 80% white enrollment","Primary Schools","Middle Schools","Combined Grade Offering","less than 300 enrollment size","300-499 enrollment size","1000 or more enrollment size","Schools in cities","Schools in Towns", "Schools in Rural Regions"),
+covariate.labels = c("greater than 95% white enrollment","greater than 80% till 95% white enrollment","greater than 50% till 80% white enrollment","Middle Schools","High Schools","Combined Grade Offering","less than 300 enrollment size","300-499 enrollment size","500-999 enrollment size","Suburban schools","Schools in Towns", "Schools in Rural Regions"),
     dep.var.labels = c("Total number of hate and gang related crimes reported", "Total number of violent crimes reported by the school","Total number of violent crimes reported by the police"),
           column.labels = c("Model 1", "Model 2","Model 3"))
 ```
