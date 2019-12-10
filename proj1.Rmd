@@ -18,7 +18,7 @@ These crimes have serious implications on the safety of students and staff at sc
 
 The primary purpose of this paper is to examine as to what extent do factors other than security measures undertaken by the school and law enforcement affect crimes of varying degrees in schools. Previous work done by researchers (Jennings et al.2011), have examined relationships between school security facilities and crimes; concluding that increase in deployment of recognizable law enforcement officials and metal detectors reduced violent crimes while increased possession of firearms by police was statistically associated with higher violent criminal activities. This paper would expand on such research by examining if certain school characteristics like race (percentage of whites and non-white people enrolled), the level of education (primary, high school, middle school or combined), school size with respect to total enrollment, location of the school (whether in a city, suburban area, town or a rural area) affect the number of crimes both violent (indicated by actions such as shootings, attacks, murders, etc.) and non-violent (possession of weapons, drugs, etc.). 
 
-This study can be viewed as a humbly attempted extension of the previous work done by economists and researchers on addressing K12 crime issues, while helping legislators and law enforcements alike to take steps to address them hence ensuring a safe environment for learning and growth for students all over the US.
+This study can hence be viewed as a humbly attempted extension of the previous work done by economists and researchers on addressing K12 crime issues, while helping legislators and law enforcements alike to take steps to address them hence ensuring a safe environment for learning and growth for students all over the US.
 
 ***
 
@@ -119,34 +119,34 @@ perwht <- factor(dat$PERCWHT, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of perwht
 summary(aov(dat$GANGHATE~perwht)) 
 ```
-Since the results are significant (>95% C.I), we might run a regression to estimate how change in perwht across categories affect GANGHATE. 
+
 Let's see what we have for the other independent variables with respect to GANGHATE. 
-1. ANOVA test of school level of education against total number of gang related crimes, total number of incidents reported with school and police (VIOINC10 and VIOPOL10)
+1. ANOVA test of school level of education against total number of gang related crimes
 ```{r}
 #convert FR_LVEL to factor(fr_lvel)
 fr_lvel <- factor(dat$FR_LVEL, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_lvel
-summary.aov(manova(cbind(dat$GANGHATE,dat$VIOINC10,dat$VIOPOL10)~fr_lvel)) 
+summary(aov(dat$GANGHATE~fr_lvel)) 
 ```
-2. ANOVA test of school enrollment size against total number of gang related crimes, total number of incidents reported with school and police (VIOINC10 and VIOPOL10).
+2. ANOVA test of school enrollment size against total number of gang related crimes
 ```{r}
 #convert FR_SIZE to factor(fr_size)
 fr_size <- factor(dat$FR_SIZE, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_size
-summary.aov(manova(cbind(dat$GANGHATE,dat$VIOINC10,dat$VIOPOL10)~fr_size)) 
+summary(aov(dat$GANGHATE~fr_size)) 
 ```
-3. ANOVA test of school location against total number of gang related crimes, total number of incidents reported with school and police (VIOINC10 and VIOPOL10)
+3. ANOVA test of school location against total number of gang related crimes
 ```{r}
 #convert FR_URBAN to factor(fr_urban)
 fr_urban <- factor(dat$FR_URBAN, ordered = FALSE)
 #carry out one-way ANOVA between total number of hate crimes and gang related crimes and categories of fr_urban
-summary.aov(manova(cbind(dat$GANGHATE,dat$VIOINC10,dat$VIOPOL10)~fr_urban)) 
+summary(aov(dat$GANGHATE~fr_urban)) 
 ```
 It's evident that our results are statistically significant (p<0.05) hence they will be all incoporated in our regression analysis!  
 ***
 
 # **4.  Analysis and Results **
-A multiple regression between GANGHATE and factors of PERCWHT, FR_LVEL, FR_SIZE, FR_URBAN to check the partial effects of each on total gang and hate related crimes.
+A multiple regression between GANGHATE, VIOINC10, VIOPOL10 and factors of PERCWHT, FR_LVEL, FR_SIZE, FR_URBAN to check the partial effects of each on the dependent variables.
 ```{r, results = "asis"}
 #Results of the regression
 m1<- lm(formula = GANGHATE~perwht+fr_lvel+fr_size+fr_urban, data = dat)
@@ -161,7 +161,7 @@ stargazer(list(m1, m2, m3), type="html", single.row = TRUE,
 The results can be interpreted as follows : (ceterus paribus)
 
 1. The total number of gang hate crimes on average for schools with white student enrollment >80%-95% is 0.298 instances lesser than schools with white student enrollment of >95%. Also, the total number of gang hate crimes on average for schools with white student enrollment >50%-80% and >50% is 0.069 instances lesser and 1.226 instances more than schools with white student enrollment of >95% respectively. 
-This observation faces issues of statistical significance for the first two categories of the variable "percentage of white student enrollment", hence in order to confirm if this variable should be dropped from our model, we conduct a Likelihood Ratio Test and see if p<0.05 for our level of significance. There is a multicollinearity issue here (schools with >95% whites will also encompass observations from schools with >80%-95% whites)
+This observation faces issues of statistical significance for the first two categories of the variable "percentage of white student enrollment", hence in order to confirm if this variable should be dropped from our model, we conduct a Likelihood Ratio Test and see if p<0.05 for our level of significance. There might be a multicollinearity issue too here (schools with >95% whites will also encompass schools with >80%-95% whites)
 
 ```{r}
 #LRT test 
@@ -178,7 +178,7 @@ Results might come across as statistically insignificant owing to multicollinear
 
 4. Our last variable in the model can be explained as follows : Schools in suburban areas report on an average 1.323 lesser instances of gang related crimes as compared to schools in cities while schools in towns and rural areas report 1.221 and 1.309 instances of lesser gang and hate related crimes on an average than schools in cities. All results are significant with p<0.05
 
-
+##  4.1  Improved Model with changed reference levels
 
 Let's change the factor levels to account for multicollinearity issues by relevelling and see how our results stack up both in terms of beta coefficients and significance tests!
 
@@ -196,3 +196,53 @@ covariate.labels = c("greater than 95% white enrollment","greater than 80% till 
           column.labels = c("Model 1", "Model 2","Model 3"))
 ```
 
+It's but obvious that relevelling will change our interpretation since the reference point within the categorical variable changes. 
+
+1. We now see that schools with more than 95% white student enrollment report gang-hate related crimes 1.226 instances lesser on average when compared to schools with less than 50% white student enrollment while these numbers are 1.524 and 1.294 on average (lesser than our reference point: <50% white enrollment) for schools with >80%-95% and >50%-80% white student enrollment respectively.
+The results are now significant at 0.05 level.
+The results are interesting since they tell us that on either extremes (too many whites or too few whites) might report more of such crimes. The least vulnerable school to such instances in our sample seems to be the school category with >80%-95% white student enrollment. However the racial biased against non-whites committing more of these crimes is confirmed with our sample as can be seen in the signs of beta coefficients obtained.
+
+2. The total number of gang hate related crimes on average for middle schools is 0.893 instances greater than those in primary schools, while it is 0.909 and 0.81 instances greater for high schools and schools with combined grade offerings. The multicollinearity in terms of combined grade offerings as explained above cannot really be corrected as the sample has been designed that way. 
+The notion is confirmed that high and middle schools are at an increased risk of such crimes as compared to primary schools.
+
+3. For our next variable, we observe that schools with enrollment size of less than 300 report gang related crimes on an average of 1.239 instances lesser than schools with size of 1000 or more students. Schools with 300-499 and 500-999 students report such crimes on an average 1.038 and 0.803 lesser respectively than schools of 1000 students or more.
+It's clear that schools with greater size are at increasing risk of reporting more of such crimes.
+
+4. The results of the last variable are the same as obtained in the previous regression showing that schools in cities are at an increased risk for gang and hate related crimes. 
+
+Notice how relevelling for Model 1 also comparatively improves signifiance test results for Model 2 and 3 respectively. For our second model, we examine how the total number of violent incidents reported (which include activities involving a weapon or otherwise like homicides, murder, robbery, threats of attacks, rape) are affected by school levels, size, % white students and location. 
+The trend for our first independent variable (% whites) signifies that schools with >95% white population report 12.869 lesser instances of crimes on an average as compared to schools with less than 50% white population. Schools with >80%-95% white enrollment fare better (lesser crimes reported) as compared to schools with >50%-80% and >95%  white enrollment. Interestingly, here the middle schools fared worst (most instances of crime reported in comparion to primary schools) when compared to high schools and combined grade offerings. The trend is similar as in model 1 with respect to school size (greater the size, higher the number of crimes reported by the school) while location yields results which fails the 0.05 level significance test, indicating that we fail to reject the null hypothesis about varying degrees of violent crimes reported by school across levels of school location. 
+Model 3 witnesses similar trend observations as our second model when % white enrollment is considered. However, in terms of school levels, high schools tended to have highest instances of violent crimes reported by the police on average when compared to primary schools, similar to results obtained in our first model. For the variable school enrollment size, it also shows that bigger schools tend to be at a higher risk for violent crimes. The location coefficients are not significant at 0.05 level of testing, similar to model 2. 
+
+What does all of this discussion imply? Firstly, it confirms the racial bias against non-white people, who are accused of comitting more crimes. It also shows that schools with an extremely high number of whites (>95%) might also report higher instances of crimes as compared to schools with other compositions (except <50% whites). This might be attributed to imbalances in diversity in the school environment which lead to crimes against non-whites as the latter is a minority in such schools. Hence diversity imbalances on both extremes are bad for ensuring overall safety. Secondly, it confirms research on data of previous years that middle and high schools tend to report higher instances of crime as compared to primary schools. Hence they might need increased attention and preventive measures. Thirdly, schools with more students tend to be at a higher risk of either gang related or violent crimes. This could be expected as a higher enrollment size increases the risk exposure to crimes. And lastly, schools in cities report higher instances of gang and hate related crimes as compared to schools in the suburbs, towns or rural regions but the risk in towns is still higher than in suburbs or rural zones possibly because of bigger town sizes resembling almost the size of an average city incorporated in our sample. This defies any previous assumption that better educational and/or awareness facilities in cities would witness lesser instances of hate and gang related crimes! 
+
+##  4.2   Additional Tests of Significance (F-test)
+
+Let us examine the failure of variable fr_urban (location of schools) in our Models 2 and 3 at 0.05 level
+We conduct an F-test to see if we can drop fr_urban, checking the p value if it is <0.05
+```{r}
+m2hatt<- lm(formula = VIOINC10~perwht+fr_lvel+fr_size, data = dat)
+anova(m2,m2hatt)
+
+m3hatt<- lm(formula = VIOPOL10~perwht+fr_lvel+fr_size, data = dat)
+anova(m3,m3hatt)
+```
+
+Clearly we obtain p>0.05 wherein we fail to reject the hypothesis that fr_urban as a predictor for Models 2 and 3 is not significant at 0.05 level. One could hence drop that variable from Model 2 and Model 3. 
+
+##  4.3   Short Comings and Limitations of the study
+
+One obvious short-coming in our regression analysis was using the level = combined offerings in terms of school levels which incorporates all school levels, making multicollinearity issues arise. Besides that, the regression models run had independent variables which were not incorporated in previous papers with the SSOC 2010 Survey Data. By no means is the model complete, as is reflected in R square values which state only 4.7%, 10.7% and 9.7% of the variations in our dependent variables across Models 1,2,3 respectively were explained by our independent variables of interest. Hence a lot of improvement can be made to increase the explanatory power of our regression models.
+
+# **5. Bibliography **
+
+1.  Jennings, W. G., D. N. Kyehb, J. Maskalya, and C. M. Donnera (2011). “Evaluating the Relationship Between
+Law Enforcement and School Security Measures and Violent Crime in Schools.” Journal of Police Crisis
+Negotiations 11(2): 109–124.
+
+2.  Neiman, S. (2011). Crime, Violence, Discipline, and Safety in U.S. Public Schools: Findings From the School Survey on Crime and Safety: 2009–10 (NCES 2011-320). National Center for Education Statistics, Institute of Education Sciences, U.S. Department of Education. Washington, DC.
+
+3.  Nickerson, A. B., and E. D. Slater (2009). “School and Community Violence and Victimization as Predictors
+of Adolescent Suicidal Behavior.” School Psychology Review 38(2): 218
+
+4.  Van Horn, R. (1998). “Keeping Children Safe.” Phi Delta Kappan 79(8): 633–634.
